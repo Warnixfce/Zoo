@@ -9,7 +9,7 @@ namespace Zoo
 {
     class Zoo
     {
-        //hardcoded, just for practice
+        //hardcoded, just for practice THIS IS A TEST
         public string Name = "ZooWorld";
         public string City = "Buenos Aires";
         public string OpHours = "from 9:00 a.m. to 6:00 p.m. Monday to Friday. And from 9:00 a.m. to 7:00 p.m. Saturdays and Sundays";
