@@ -13,29 +13,15 @@ namespace Zoo
 
         public void CreatedCrocodile(Crocodile croc, ref int numberTeeth)
         {
-            int numberTeethValid;
-            bool Flag = false;
+            bool Flag;
             do
             {
                 Console.WriteLine("Please enter {0}'s number of teeth: ", croc.Name);
-                string number = Console.ReadLine();
-
-                if (!int.TryParse(number, out numberTeethValid))
-                {
-                    Console.WriteLine("You must enter a number.");                    
-                }
-                else if (numberTeethValid < 0)
-                {
-                    Console.WriteLine("You must enter zero or a positive number.");                    
-                }
-                else
-                {
-                    Console.WriteLine("{0}'s number of teeth is {1}.", croc.Name, numberTeethValid);     
-                    Flag = true;
-                }
+                string entry = Console.ReadLine();
+                Flag = Validation.ForIntegers(entry, ref numberTeeth);
             } while (Flag == false);
 
-            numberTeeth = numberTeethValid;
+            Console.WriteLine("{0}'s number of teeth is {1}.", croc.Name, numberTeeth);
         }
 
         public void FavouriteFood(Crocodile croc, ref string favourite)
@@ -56,6 +42,7 @@ namespace Zoo
                 }
                 else
                 {
+                    fav = fav.Substring(0, 1).ToUpper() + fav.Substring(1); //to turn the first word's letter into a capital letter
                     Console.WriteLine("{0}'s favourite food is {1}.", croc.Name, fav);
                     Flag = true;
                 }

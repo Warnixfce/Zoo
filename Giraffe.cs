@@ -12,29 +12,15 @@ namespace Zoo
 
         public void CreatedGiraffe(Giraffe gir, ref float heightGiraffe)
         {
-            float heightValid;
-            bool Flag = false;
+            bool Flag;
             do
             {
                 Console.WriteLine("Please enter {0}'s height (in meters): ", gir.Name);
-                string height = Console.ReadLine();
-
-                if (!float.TryParse(height, out heightValid))
-                {
-                    Console.WriteLine("You must enter a number.");                    
-                }
-                else if (heightValid <= 0f)
-                {
-                    Console.WriteLine("You must enter a positive number.");                    
-                }
-                else
-                {
-                    Console.WriteLine("{0}'s height is {1}m.", gir.Name, heightValid);
-                    Flag = true;
-                }
+                string entry = Console.ReadLine();
+                Flag = Validation.ForFloats(entry, ref heightGiraffe);                                
             } while (Flag == false);
 
-            heightGiraffe = heightValid;
+            Console.WriteLine("{0}'s height is {1}m.", gir.Name, heightGiraffe);
         }
 
         public void CompareHeight(Giraffe giraffeToCompare)

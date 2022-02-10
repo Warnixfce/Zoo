@@ -13,7 +13,7 @@ namespace Zoo
         public string Name = "ZooWorld";
         public string City = "Buenos Aires";
         public string OpHours = "from 9:00 a.m. to 6:00 p.m. Monday to Friday. And from 9:00 a.m. to 7:00 p.m. Saturdays and Sundays";
-
+        
         private static List<Animal> AnimalsInZoo = new List<Animal>();
 
         public void QuantityInZoo()
@@ -38,7 +38,7 @@ namespace Zoo
             string animalSpecies;
             string animalName;
             string animalNbrLegs;
-            int animalLegsValid;
+            int animalLegsValid = 0;
             string animalGender;
             string animalDescription;
 
@@ -48,8 +48,8 @@ namespace Zoo
             {
                 Console.WriteLine("Please enter the species of the animal you wish to add: ");
                 animalSpecies = Console.ReadLine();
-                Flag = StringValidation(animalSpecies, "species");
-                animalSpecies = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(animalSpecies.ToLower());
+                Flag = Validation.StringValidation(animalSpecies, "species");
+                animalSpecies = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(animalSpecies.ToLower()); //to turn every word's first letter into a capital letter
 
             } while (Flag == false);
 
@@ -57,8 +57,8 @@ namespace Zoo
             {
                 Console.WriteLine("Please enter the name of the animal you wish to add: ");
                 animalName = Console.ReadLine();
-                Flag = StringValidation(animalName, "name");
-                animalName= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(animalName.ToLower());
+                Flag = Validation.StringValidation(animalName, "name");
+                animalName= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(animalName.ToLower()); //to turn every word's first letter into a capital letter
 
             } while (Flag == false);            
 
@@ -66,28 +66,14 @@ namespace Zoo
             {
                 Console.WriteLine("Please enter the number of legs of the animal you wish to add: ");
                 animalNbrLegs = Console.ReadLine();
-
-                if (!int.TryParse(animalNbrLegs, out animalLegsValid))
-                {
-                    Console.WriteLine("You must enter a number.");
-                    Flag = false;
-                }
-                else if (animalLegsValid < 0)
-                {
-                    Console.WriteLine("You must enter zero or a positive number.");
-                    Flag = false;
-                }
-                else
-                {                    
-                    Flag = true;
-                }
+                Flag = Validation.ForIntegers(animalNbrLegs, ref animalLegsValid);                
             } while (Flag == false);
 
             do
             {
                 Console.WriteLine("Please enter 'M' (Male) or 'F' (Female) as the gender of the animal you wish to add: ");
                 animalGender = Console.ReadLine().ToUpper();
-                Flag = OptionValidation(animalGender, "gender", "M", "F");               
+                Flag = Validation.OptionValidation(animalGender, "gender", "M", "F");      
             } while (Flag == false);
 
             do
@@ -102,7 +88,7 @@ namespace Zoo
                 else
                 {   
                     Flag = true;
-                    animalDescription = animalDescription.Substring(0,1).ToUpper() + animalDescription.Substring(1);
+                    animalDescription = animalDescription.Substring(0,1).ToUpper() + animalDescription.Substring(1); //to turn the first word's letter into a capital letter
                 }
             } while (Flag == false);
 
@@ -131,7 +117,7 @@ namespace Zoo
                 {
                     Console.WriteLine("Do you wish to compare {0}'s height to the average? (Y/N)", giraffe.Name);
                     compare = Console.ReadLine().ToUpper();
-                    option = OptionValidation(compare, "entry", "Y", "N");
+                    option = Validation.OptionValidation(compare, "entry", "Y", "N");
                     if(compare == "Y")
                     {
                         giraffe.CompareHeight(giraffe);
@@ -213,36 +199,42 @@ namespace Zoo
                 bool Flag;
                 string speciesToRemove;
                 string nameToRemove;
+                string genderToRemove;
 
                 do
                 {
                     Console.WriteLine("Please enter the species of the animal you wish to remove: ");
                     speciesToRemove = Console.ReadLine();
-                    Flag = StringValidation(speciesToRemove, "species");
+                    Flag = Validation.StringValidation(speciesToRemove, "species");
                     speciesToRemove = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(speciesToRemove.ToLower());
-
                 } while (Flag == false);
 
                 do
                 {
                     Console.WriteLine("Please enter the name of the animal you wish to remove: ");
                     nameToRemove = Console.ReadLine();
-                    Flag = StringValidation(nameToRemove, "name");
+                    Flag = Validation.StringValidation(nameToRemove, "name");
                     nameToRemove = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(nameToRemove.ToLower());
-
                 } while (Flag == false);
-                
 
-                animalToRemove = AnimalsInZoo.Find(A => A.Species == speciesToRemove && A.Name == nameToRemove);
+                do
+                {
+                    Console.WriteLine("Please enter the gender of the animal you wish to remove: ");
+                    genderToRemove = Console.ReadLine().ToUpper();
+                    Flag = Validation.OptionValidation(genderToRemove, "gender", "M", "F");
+                } while (Flag == false);
+
+
+                animalToRemove = AnimalsInZoo.Find(A => A.Species == speciesToRemove && A.Name == nameToRemove && A.Gender == genderToRemove);
 
                 if (animalToRemove == null)
                 {
-                    Console.WriteLine("There is no animal with the species \'{0}\' and the name \'{1}\' in the zoo. Please enter an animal that exists in the zoo.", speciesToRemove, nameToRemove);
+                    Console.WriteLine("There is no animal with the species \'{0}\', the name \'{1}\' and gender \'{2}\' in the zoo. Please enter an animal that exists in the zoo.", speciesToRemove, nameToRemove, genderToRemove);
                 }
                 else
                 {
                     AnimalsInZoo.Remove(animalToRemove);
-                    Console.WriteLine("The animal with species \'{0}\' and name \'{1}\' has been successfully removed from the zoo.", speciesToRemove, nameToRemove);
+                    Console.WriteLine("The animal with species \'{0}\', name \'{1}\' and gender \'{2}\' has been successfully removed from the zoo.", speciesToRemove, nameToRemove, genderToRemove);
                 }
             }            
         }
@@ -253,7 +245,7 @@ namespace Zoo
 
             foreach(Animal A in AnimalsInZoo)
             {
-                nameDescrption += "Species: " + A.Species + " -  Name: " + A.Name + " - Description: " + A.Description + "." + System.Environment.NewLine;
+                nameDescrption += "Species: " + A.Species + " -  Name: " + A.Name + " - Gender: " + A.Gender + " - Description: " + A.Description + "." + System.Environment.NewLine;
             }
             if(string.IsNullOrEmpty(nameDescrption))
             {
@@ -286,47 +278,8 @@ namespace Zoo
             {
                 Console.WriteLine("Since today is {0}, the admission price is $19.99.", wk);
             }
-        }
+        }    
 
-        
-
-        public bool StringValidation(string characters, string type)
-        {
-            bool Flag = false;
-
-            if (string.IsNullOrEmpty(characters))
-            {
-                Console.WriteLine("The {0} mustn't be empty.", type);
-            }
-            else if (characters.Any(char.IsDigit))
-            {
-                Console.WriteLine("The {0} mustn't contain numbers.", type);
-            }
-            else
-            {
-                Flag = true;
-            }
-            return Flag;
-        }
-
-        public bool OptionValidation(string option, string type, string char1, string char2)
-        {
-            bool Flag = false;
-            if (string.IsNullOrEmpty(option))
-            {
-                Console.WriteLine("The {0} mustn't be empty.", type);                
-            }
-            else if (option != char1 && option != char2)
-            {
-                Console.WriteLine("The {0} must be \'{1}\' or \'{2}\'.", type, char1, char2);                
-            }
-            else
-            {
-                Flag = true;
-            }
-
-            return Flag;
-        }
 
         public static List<Animal> GetList()
         {

@@ -12,29 +12,15 @@ namespace Zoo
 
         public void CreatedGiantTortoise(Giant_Tortoise gTor, ref float age)
         {
-            float ageValid;
-            bool Flag = false;
+            bool Flag;
             do
             {
                 Console.WriteLine("Please enter {0}'s age (in years): ", gTor.Name);
-                string ageToValidate = Console.ReadLine();
-
-                if (!float.TryParse(ageToValidate, out ageValid))
-                {
-                    Console.WriteLine("You must enter a number.");                    
-                }
-                else if (ageValid < 0f)
-                {
-                    Console.WriteLine("You must enter a positive number.");                    
-                }
-                else
-                {
-                    Console.WriteLine("{0}'s age is {1} years old", gTor.Name, ageValid);
-                    Flag = true;
-                }
+                string entry = Console.ReadLine();
+                Flag = Validation.ForFloats(entry, ref age);
             } while (Flag == false);
 
-            age = ageValid;
+            Console.WriteLine("{0}'s age is {1} years old.", gTor.Name, age);                        
         }
 
         public void Youth(Giant_Tortoise gTor)

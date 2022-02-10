@@ -27,18 +27,34 @@ namespace Zoo
                 string speciesDescrip;
                 string nameDescrip;
                 string genderDescip;
+                bool Flag;
                 Animal animalToPrintDescription = new Animal();
 
-                Console.WriteLine("Please enter the species of the animal you wish to know it's description: ");
-                speciesDescrip = Console.ReadLine();
-                speciesDescrip = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(speciesDescrip.ToLower());
+                do
+                {
+                    Console.WriteLine("Please enter the species of the animal you wish to know it's description: ");
+                    speciesDescrip = Console.ReadLine();
+                    Flag = Validation.StringValidation(speciesDescrip, "species");
+                    speciesDescrip = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(speciesDescrip.ToLower());
 
-                Console.WriteLine("Please enter the name of the animal you wish to know it's description: ");
-                nameDescrip = Console.ReadLine();
-                nameDescrip = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(nameDescrip.ToLower());
+                } while (Flag == false);
 
-                Console.WriteLine("Please enter the gender of the animal you wish to know it's description: ");
-                genderDescip = Console.ReadLine().ToUpper();
+                do
+                {
+                    Console.WriteLine("Please enter the name of the animal you wish to know it's description: ");
+                    nameDescrip = Console.ReadLine();
+                    Flag = Validation.StringValidation(nameDescrip, "name");
+                    nameDescrip = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(nameDescrip.ToLower());
+
+                } while (Flag == false);
+
+                do
+                {
+                    Console.WriteLine("Please enter 'M' (Male) or 'F' (Female) as the gender of the animal you wish to know it's description: ");
+                    genderDescip = Console.ReadLine().ToUpper();
+                    Flag = Validation.OptionValidation(genderDescip, "gender", "M", "F");
+                } while (Flag == false);
+                
 
                 animalToPrintDescription = CurrentAnimalsInZoo.Find(A => A.Species == speciesDescrip && A.Name == nameDescrip && A.Gender == genderDescip);
 
