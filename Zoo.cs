@@ -41,6 +41,7 @@ namespace Zoo
             int animalLegsValid = 0;
             string animalGender;
             string animalDescription;
+            string message = "";
 
             Animal animalToAdd = new Animal();
 
@@ -93,25 +94,18 @@ namespace Zoo
             } while (Flag == false);
 
             if (animalSpecies == "Giraffe")
-            {
+            {                
                 bool option;
                 string compare;
                 float animalHeight = 0;
-                Giraffe giraffe = new Giraffe
-                {
-                    Species = "Giraffe",
-                    Name = animalName,
-                    NbrLegs = animalLegsValid,
-                    Gender = animalGender,
-                    Description = animalDescription
-                };
+                Giraffe giraffe = new Giraffe();
+
+                AddingCommon(giraffe, animalSpecies, animalName, animalLegsValid, animalGender, animalDescription, ref message);            
                 giraffe.CreatedGiraffe(giraffe, ref animalHeight);
                 giraffe.Height = animalHeight;
 
-                AnimalsInZoo.Add(giraffe);
-                Console.WriteLine("\nCongratulations! You added a new animal to the zoo. This is a sum up of the information about it:" +
-                    "\nSpecies: Giraffe. \nName: {0}. \nNumber of Legs: {1}. \nGender: {2}. \nDescription: {3}. \nHeight: {4}m.", 
-                    animalName, animalLegsValid, animalGender, animalDescription, animalHeight);
+                message += ".\nHeight: " + animalHeight + "m.";
+                Console.WriteLine(message);                
                 
                 do
                 {
@@ -130,61 +124,54 @@ namespace Zoo
             }
 
             else if (animalSpecies == "Crocodile")
-            {
+            {                
                 int animalNumberTeeth = 0;
                 string animalFavourite = "";
-                Crocodile crocodile = new Crocodile
-                {
-                    Species = "Crocodile",
-                    Name = animalName,
-                    NbrLegs = animalLegsValid,
-                    Gender = animalGender,
-                    Description = animalDescription
-                };
+                Crocodile crocodile = new Crocodile();
+
+                AddingCommon(crocodile, animalSpecies, animalName, animalLegsValid, animalGender, animalDescription, ref message);                
                 crocodile.CreatedCrocodile(crocodile, ref animalNumberTeeth);
                 crocodile.NbrTeeth = animalNumberTeeth;
                 crocodile.FavouriteFood(crocodile, ref animalFavourite);
                 crocodile.FavFood = animalFavourite;
 
-                AnimalsInZoo.Add(crocodile);
-                Console.WriteLine("\nCongratulations! You added a new animal to the zoo. This is a sum up of the information about it:" +
-                    "\nSpecies: Crocodile. \nName: {0}. \nNumber of Legs: {1}. \nGender: {2}. \nDescription: {3}. \nNumber of Teeth: {4}. \nFavourite food: {5}."
-                    , animalName, animalLegsValid, animalGender, animalDescription, animalNumberTeeth, animalFavourite);                
+                message += ".\nNumber of Teeth: " + animalNumberTeeth + ".\nFavourite food: " + animalFavourite + ".";
+                Console.WriteLine(message);       
             }
 
             else if (animalSpecies == "Giant Tortoise")
-            {
+            {                
                 float animalAge = 0;
-                Giant_Tortoise tortoise = new Giant_Tortoise
-                {
-                    Species = "Giant Tortoise",
-                    Name = animalName,
-                    NbrLegs = animalLegsValid,
-                    Gender = animalGender,
-                    Description = animalDescription
-                };
+                Giant_Tortoise tortoise = new Giant_Tortoise();
+
+                AddingCommon(tortoise, animalSpecies, animalName, animalLegsValid, animalGender, animalDescription, ref message);
                 tortoise.CreatedGiantTortoise(tortoise, ref animalAge);
                 tortoise.Age = animalAge;
                 tortoise.Youth(tortoise);
 
-                AnimalsInZoo.Add(tortoise);
-                Console.WriteLine("\nCongratulations! You added a new animal to the zoo. This is a sum up of the information about it:" +
-                    "\nSpecies: Giant Tortoise. \nName: {0}. \nNumber of Legs: {1}. \nGender: {2}. \nDescription: {3}. \nAge: {4} years."
-                    , animalName, animalLegsValid, animalGender, animalDescription, animalAge);
+                message += ".\nAge: " + animalAge + " years.";
+                Console.WriteLine(message);               
             }
 
             else
-            {
-                animalToAdd.Species = animalSpecies;
-                animalToAdd.Name = animalName;
-                animalToAdd.NbrLegs = animalLegsValid;
-                animalToAdd.Gender = animalGender;
-                animalToAdd.Description = animalDescription;
-
-                AnimalsInZoo.Add(animalToAdd);                
-                Console.WriteLine("\nCongratulations! You added a new animal to the zoo. This is a sum up of the information about it:" +
-                    "\nSpecies: {0}. \nName: {1}. \nNumber of Legs: {2}. \nGender: {3}. \nDescription: {4}.", animalSpecies, animalName, animalLegsValid, animalGender, animalDescription);
+            {                
+                AddingCommon(animalToAdd, animalSpecies, animalName, animalLegsValid, animalGender, animalDescription, ref message);
+                Console.WriteLine(message);                
             }          
+        }
+
+        public void AddingCommon(Animal animalAdding, string species, string name, int numberLegs, string gender, string description, ref string message)
+        {   
+            animalAdding.Species = species;
+            animalAdding.Name = name;
+            animalAdding.NbrLegs = numberLegs;
+            animalAdding.Gender = gender;
+            animalAdding.Description = description;
+
+            AnimalsInZoo.Add(animalAdding);
+
+            message = "\nCongratulations! You added a new animal to the zoo. This is a sum up of the information about it: " +
+                "\nSpecies: " + species + ".\nName: " + name + ".\nNumber of Legs: " + numberLegs + ".\nGender: " + gender + ".\nDescription: " + description; 
         }
 
         public void RemoveAnimal()
@@ -278,9 +265,9 @@ namespace Zoo
             {
                 Console.WriteLine("Since today is {0}, the admission price is $19.99.", wk);
             }
-        }    
+        }
 
-
+        
         public static List<Animal> GetList()
         {
             return AnimalsInZoo;
